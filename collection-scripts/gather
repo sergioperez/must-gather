@@ -1,9 +1,16 @@
 #!/bin/bash
+BIN_DIR_FILE="bin_dir"
+LOGS_DIR_FILE="logs_dir"
+
+LOGS_DIR=$(cat ${LOGS_DIR_FILE})
+BIN_DIR=$(cat ${BIN_DIR_FILE})
+
 
 # generate /must-gather/version file
 . version
-echo "openshift/must-gather" > /must-gather/version
-version >> /must-gather/version
+echo "openshift/must-gather" > "${LOGS_DIR}/version"
+version >> "${LOGS_DIR}/version"
+
 
 # Resource List
 resources=()
@@ -35,11 +42,11 @@ resources+=(networks.operator.openshift.io)
 # Run the Collection of Resources using inspect
 # running accross all-namespaces for the few "Autoscaler" resouces.
 for resource in "${resources[@]}"; do
-    oc adm inspect --dest-dir must-gather ${resource}
+    oc adm inspect --dest-dir ${LOGS_DIR}
 done
 
 # Collect System Audit Logs
-/usr/bin/gather_audit_logs
+${BIN_DIR}/gather_audit_logs
 
 # Gather Service Logs (using a suplamental Script); Scoped to Masters.
-/usr/bin/gather_service_logs master
+${BIN_DIR}/gather_service_logs master

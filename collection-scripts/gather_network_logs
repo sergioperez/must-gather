@@ -1,5 +1,11 @@
 #!/bin/bash
-BASE_COLLECTION_PATH="/must-gather"
+BIN_DIR_FILE="bin_dir"
+LOGS_DIR_FILE="logs_dir"
+
+LOGS_DIR=$(cat ${LOGS_DIR_FILE})
+BIN_DIR=$(cat ${BIN_DIR_FILE})
+
+BASE_COLLECTION_PATH="${LOGS_DIR}"
 NETWORK_LOG_PATH="${BASE_COLLECTION_PATH}/network_logs/"
 
 mkdir -p ${NETWORK_LOG_PATH}/
